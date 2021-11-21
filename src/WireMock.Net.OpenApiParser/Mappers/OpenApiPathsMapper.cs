@@ -335,7 +335,8 @@ namespace WireMock.Net.OpenApiParser.Mappers
                             Name = GetMatcherName(_settings.HeaderPatternToUse),
                             Pattern = GetExampleValue(qp.Schema, _settings.HeaderPatternToUse)
                         }
-                    }
+                    },
+                    IgnoreCase = true
                 })
                 .ToList();
 
@@ -355,7 +356,8 @@ namespace WireMock.Net.OpenApiParser.Mappers
                             Name = GetMatcherName(_settings.HeaderPatternToUse),
                             Pattern = GetExampleValue(qp.Schema, _settings.HeaderPatternToUse)
                         }
-                    }
+                    },
+                    IgnoreCase = true
                 })
                 .ToList();
 
