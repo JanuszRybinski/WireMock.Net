@@ -48,7 +48,20 @@ namespace WireMock.Net.OpenApiParser.Mappers
             var pathParameters = operation.Parameters.Where(p => p.In == ParameterLocation.Path);
             var headers = operation.Parameters.Where(p => p.In == ParameterLocation.Header);
 
-            var response = operation.Responses.FirstOrDefault();
+            var response = operation.Responses
+                .Where(r => int.TryParse(r.Key, out var statusCode) && statusCode >= 200 && statusCode <= 299)
+                .OrderBy(r => r.Key)
+                .FirstOrDefault();
+
+            if (response.Value is null)
+            {
+                response = operation.Responses.FirstOrDefault(r => r.Key.Equals("default", StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            if (response.Value is null)
+            {
+                response = operation.Responses.FirstOrDefault();
+            }
 
             TryGetContent(response.Value?.Content, out OpenApiMediaType responseContent, out string responseContentType);
             var responseSchema = response.Value?.Content?.FirstOrDefault().Value?.Schema;
